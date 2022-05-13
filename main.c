@@ -11,18 +11,17 @@ int main(void)
 {
   FILE* file =NULL;
   file=fopen("/Users/ibrahimandiaye/Documents/INFO/itinerairemetro/itinerairemetro/metro.csv","r");
-  char str[CHAI];
-  LIST metro={NULL, NULL};
+  LIST tab[50];
   if(file != NULL)
   {
-    loadrer(&metro, str, file);
+    loadListTab(tab, file);
     fclose(file);
   }
   else
   {
     printf("Impossible d'ouvrir le fichier \n ");
   }
-  printList(metro);
+  printList(tab[32]);
 
   return 0;
 }
