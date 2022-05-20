@@ -46,7 +46,7 @@ void printList(LIST list);
 void loadStation(STATION* station, char* str ,double *tab , int i);
 void rewind(FILE *stream);
 void loadListTab(LIST *tab , FILE *file);
-void loadmetroX(LIST *list,char* str , FILE* file , double *temps  , char a0 ,char b1 ,char c2);
+void loadmetroX(LIST *list,char* str , FILE* file, char a0 ,char b1 ,char c2);
 void loadmetroXX(LIST *list,char* str , FILE* file , char a0 ,char b1 ,char c3);
 void loadmetroXbis(LIST *list,char* str , FILE* file , char a0 ,char b1 ,char c3);
 #endif /* metro_h */
