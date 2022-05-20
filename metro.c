@@ -17,6 +17,7 @@ void printStation(STATION station , int num )
 }
 void loadtabTemps(double *tab, char* str , int i)
 {
+
   char* new_str = strtok(str, ":");
   new_str = strtok(NULL, ":");
   new_str = strtok(NULL, ":");
@@ -31,6 +32,8 @@ void loadtabTemps(double *tab, char* str , int i)
     }
   }
   tab[i] = atof(new_str);
+  printf("%lf  ; ",tab[i]);
+
 }
 void loadStation(STATION* station, char* str ,double *tab , int i)
 {
@@ -38,12 +41,22 @@ void loadStation(STATION* station, char* str ,double *tab , int i)
   new_str = strtok(NULL, ":");
   new_str = strtok(NULL, ":");
   strncpy(station->nomS,new_str,CHAI);
+//  printf("%lf - %lf = %lf \n" ,tab[i+1],tab[i], tab[i+1]-tab[i]);
   station->tempSuiv=tab[i+1]-tab[i];
+  if(tab[i+1]-tab[i]>0.1)
+  {
+    station->tempSuiv = (station->tempSuiv-0.4)+0.01;
+  }
   station->tempSuiv=station->tempSuiv*100;
   if (station->tempSuiv<0) {
     station->tempSuiv=-station->tempSuiv;
   }
   station->tempPrec=tab[i]-tab[i-1];
+  if(tab[i]-tab[i-1]>0.1)
+  {
+    station->tempPrec = (station->tempPrec-0.4)+0.01;
+//    printf(" choc2 %lf - %lf = %lf \n" ,tab[i],tab[i-1], (tab[i+1]-tab[i])-0.4);
+  }
   station->tempPrec=station->tempPrec*100;
   if (station->tempPrec<0) {
     station->tempPrec=-station->tempPrec;
@@ -52,7 +65,7 @@ void loadStation(STATION* station, char* str ,double *tab , int i)
   new_str = strtok(NULL, ":");
   new_str = strtok(NULL, ":");
   new_str = strtok(NULL, ":");
-  //Conversion ASCII to float
+//  Conversion ASCII to float
 }
 void appendToListSTation(LIST* list, STATION station)
 {
@@ -97,7 +110,7 @@ void printList(LIST list )
 
 void loadmetroX(LIST *list,char* str , FILE* file , char a0 ,char b1 ,char c2)
 {
-  double temps[100];
+  double temps[400];
   int z=0,k=0;
   while (!feof(file))
   {
@@ -105,7 +118,7 @@ void loadmetroX(LIST *list,char* str , FILE* file , char a0 ,char b1 ,char c2)
     {
       if(str[0]==a0 && str[1]==b1 && str[2]==c2)
       {
-        loadtabTemps(temps, str, z);
+        loadtabTemps(temps, str, z );
         z++;
       }
     }
@@ -128,7 +141,7 @@ void loadmetroX(LIST *list,char* str , FILE* file , char a0 ,char b1 ,char c2)
 }
 void loadmetroXX(LIST *list,char* str , FILE* file , char a0 ,char b1 ,char c3)
 {
-  double temps[100];
+  double temps[400];
   int z=0,k=0;
   while (!feof(file)){
     if(fgets(str,CHAI, file)!=NULL)
@@ -158,7 +171,8 @@ void loadmetroXX(LIST *list,char* str , FILE* file , char a0 ,char b1 ,char c3)
 }
 void loadmetroXbis(LIST *list,char* str , FILE* file , char a0 ,char b1 ,char c3)
 {
-  double temps[100];
+  double temps[400];
+  
   int z=0,k=0;
   while (!feof(file)){
     if(fgets(str,CHAI, file)!=NULL)
@@ -185,7 +199,10 @@ void loadmetroXbis(LIST *list,char* str , FILE* file , char a0 ,char b1 ,char c3
     }
   }
   list->last->station.tempSuiv=0;
+        
 }
+
+
 void loadListTab(LIST *tab , FILE *file)
 {
   char str[CHAI];
@@ -226,6 +243,7 @@ void loadListTab(LIST *tab , FILE *file)
       case 7:
         loadmetroXbis(&metro, str, file, '3', 'b', 'b');
         tab[i]=metro;
+        break;
       case 8:
         loadmetroX(&metro, str, file, '4', ':', 'a');
         tab[i]=metro;
@@ -332,7 +350,4 @@ void loadListTab(LIST *tab , FILE *file)
     }
   }
     fclose(file);
-  
 }
-
-
