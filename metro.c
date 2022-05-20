@@ -40,12 +40,13 @@ void loadStation(STATION* station, char* str ,double *tab , int i)
   char* new_str = strtok(str, ":");
   new_str = strtok(NULL, ":");
   new_str = strtok(NULL, ":");
+//  memset(tab, 0, 100*sizeof(int));
   strncpy(station->nomS,new_str,CHAI);
 //  printf("%lf - %lf = %lf \n" ,tab[i+1],tab[i], tab[i+1]-tab[i]);
   station->tempSuiv=tab[i+1]-tab[i];
   if(tab[i+1]-tab[i]>0.1)
   {
-    station->tempSuiv = (station->tempSuiv-0.4)+0.01;
+    station->tempSuiv = (station->tempSuiv-0.4);
   }
   station->tempSuiv=station->tempSuiv*100;
   if (station->tempSuiv<0) {
@@ -54,7 +55,7 @@ void loadStation(STATION* station, char* str ,double *tab , int i)
   station->tempPrec=tab[i]-tab[i-1];
   if(tab[i]-tab[i-1]>0.1)
   {
-    station->tempPrec = (station->tempPrec-0.4)+0.01;
+    station->tempPrec = (station->tempPrec-0.4);
 //    printf(" choc2 %lf - %lf = %lf \n" ,tab[i],tab[i-1], (tab[i+1]-tab[i])-0.4);
   }
   station->tempPrec=station->tempPrec*100;
@@ -110,7 +111,7 @@ void printList(LIST list )
 
 void loadmetroX(LIST *list,char* str , FILE* file , char a0 ,char b1 ,char c2)
 {
-  double temps[400];
+  double temps[400]={0,};
   int z=0,k=0;
   while (!feof(file))
   {
@@ -137,6 +138,7 @@ void loadmetroX(LIST *list,char* str , FILE* file , char a0 ,char b1 ,char c2)
       }
     }
   }
+  rewind(file);
   list->last->station.tempSuiv=0;
 }
 void loadmetroXX(LIST *list,char* str , FILE* file , char a0 ,char b1 ,char c3)
@@ -212,7 +214,6 @@ void loadListTab(LIST *tab , FILE *file)
     switch (i)
     {
       case 0:
-//        loadmetro1a(&metro, str, file);
         loadmetroX(&metro, str, file, '1', ':', 'a');
         tab[i]=metro;
         break;
